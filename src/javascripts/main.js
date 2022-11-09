@@ -40,7 +40,7 @@ function addNewCard(event){
 
     let cards = getCards()
     if(t && d && p){
-        let card = { place: t, description: d, poster:p}
+        let card = { place: t, description: d, poster: p}
         cards.push(card)
         localStorage.setItem('cards',JSON.stringify(cards))
     }
@@ -57,14 +57,14 @@ function displayCards() {
         <div class="card col mb-3" data-ndx="${ndx}">
   <div class="row g-0">
     <div class="col-md-4">
-      <img src="${c.poster}" class="img-fluid rounded-start" alt="${c.place}">
+      <img src="${c.poster}" class="img-fluid rounded-start" alt="${c.place}"/>
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title">${c.place}</h5>
         <p class="card-text">${c.description}</p>
         <p class="card-text">
-        <buton class = "btn btn-danger to-delete">Delete</button>
+        <button class = "btn btn-danger to-delete">Delete</button>
         </p>
       </div>
     </div>
@@ -74,11 +74,24 @@ function displayCards() {
 ndx++
     }
 document.querySelector("#cards").innerHTML = cards_html
-
-hideForm()
 }
 
+document.querySelectorAll('.to-delete').forEach(function(btn){
+btn.onclick = function(event){
+    if(confirm("are you sure you want to delete this card?")){
+        cards.splice(event.target.closest('.col').dataset.ndx,1)
+        localStorage.setItem("cards",JSON.stringify(cards))
+        displayCards()
+    }
+}
+})
 
-displayCards()
+// hideForm()
+
+
+
+
  document.querySelector("#myForm").onsubmit= addNewCard
  document.querySelector("#new_card").onclick= hidecards
+ document.querySelector(".to-cancel").onclick= hideForm
+displayCards()
